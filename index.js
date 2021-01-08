@@ -2,41 +2,22 @@
 
 import { defaultBranding, customerBranding } from "./branding.js";
 
-const hexToRgb = (hex) => {
-  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  return result
-    ? {
-        r: parseInt(result[1], 16),
-        g: parseInt(result[2], 16),
-        b: parseInt(result[3], 16),
-      }
-    : null;
-};
-
-const getStyleSheetColorString = (r, g, b) => `rgb(${r}, ${g}, ${b})`;
-
-const defaultPrimaryAsRgb = hexToRgb(defaultBranding.primaryColor);
-
-const customerPrimaryAsRgb = hexToRgb(customerBranding.primaryColor);
+import { defaultBrandingRgbs, customerBrandingRgbs } from "./helpers.js";
 
 const styleSheets = document.styleSheets;
 
 for (const styleSheet of styleSheets) {
   for (const rule of styleSheet.rules) {
-    if (
-      rule.style.fill ===
-      getStyleSheetColorString(
-        defaultPrimaryAsRgb.r,
-        defaultPrimaryAsRgb.g,
-        defaultPrimaryAsRgb.b
-      )
-    ) {
-      rule.style.fill = getStyleSheetColorString(
-        customerPrimaryAsRgb.r,
-        customerPrimaryAsRgb.g,
-        customerPrimaryAsRgb.b
+    Object.keys(defaultBrandingRgbs).map((defaultBrandingRgbKey) => {
+      console.log(
+        "defaultBrandingRgbKey",
+        defaultBrandingRgbs[defaultBrandingRgbKey]
       );
-    }
+
+      if (rule.style.fill === defaultBrandingRgbs[defaultBrandingRgbKey]) {
+        rule.style.fill = customerBrandingRgbs[defaultBrandingRgbKey];
+      }
+    });
   }
 }
 
@@ -55,8 +36,6 @@ for (const svg of svgs) {
         path.setAttribute("fill", customerBranding[colorLevel]);
       }
     });
-
-    // console.log("", path.className);
   }
 
   svg.style.display = "block";
