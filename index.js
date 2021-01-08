@@ -9,11 +9,6 @@ const styleSheets = document.styleSheets;
 for (const styleSheet of styleSheets) {
   for (const rule of styleSheet.rules) {
     Object.keys(defaultBrandingRgbs).map((defaultBrandingRgbKey) => {
-      console.log(
-        "defaultBrandingRgbKey",
-        defaultBrandingRgbs[defaultBrandingRgbKey]
-      );
-
       if (rule.style.fill === defaultBrandingRgbs[defaultBrandingRgbKey]) {
         rule.style.fill = customerBrandingRgbs[defaultBrandingRgbKey];
       }
